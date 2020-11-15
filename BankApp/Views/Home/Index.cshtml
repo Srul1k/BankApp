@@ -1,0 +1,32 @@
+﻿@using BankApp.Models;
+
+@model IEnumerable<BankApp.Models.User>
+@{
+    ViewBag.Title = "Все пользователи";
+
+}
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create">Добавить пользователя</a>
+}
+<table class="table">
+    <tr><td>Имя</td><td>Фамилия</td><td>Возраст</td><td>Адрес</td><td>Номер телефона</td></tr>
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>@item.Name</td>
+    <td>@item.Surname</td>
+    <td>@item.Age</td>
+    <td>@item.AdressOfResidance</td>
+    <td>@item.PhoneNumber</td>
+    @if (User.Identity.Name == item.Email || User.IsInRole("Admin"))
+    {
+        <td>
+            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">Подробнее</a> |
+            <a asp-action="Edit" asp-controller="Home" asp-route-id="@item.Id">Изменить</a> |
+            <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.Id">Удалить</a>
+        </td>
+    }
+    </tr>
+    }
+</table>
