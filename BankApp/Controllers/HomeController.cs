@@ -12,6 +12,7 @@ using System.Security.Claims;
 
 namespace BankApp.Controllers
 {
+    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private ApplicationContext db;
@@ -20,12 +21,14 @@ namespace BankApp.Controllers
             db = context;
         }
 
+        [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Index()
         {
             return View(await db.Users.ToListAsync());
         }
 
+        [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
@@ -40,6 +43,7 @@ namespace BankApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -57,6 +61,7 @@ namespace BankApp.Controllers
             return NotFound();
         }
 
+        [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -68,6 +73,7 @@ namespace BankApp.Controllers
             }
             return NotFound();
         }
+
         [HttpPost]
         public async Task<IActionResult> Edit(User user)
         {
@@ -76,6 +82,7 @@ namespace BankApp.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("/Home/Delete/{id?}")]
         [HttpGet]
         [ActionName("Delete")]
         [Authorize(Roles = "Admin")]
@@ -90,6 +97,7 @@ namespace BankApp.Controllers
             return NotFound();
         }
 
+        [Route("/Home/Delete/{id?}")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)

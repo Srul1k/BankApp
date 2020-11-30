@@ -98,9 +98,7 @@ namespace BankApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

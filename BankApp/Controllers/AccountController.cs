@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BankApp.Controllers
 {
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private ApplicationContext _context;
@@ -50,6 +51,8 @@ namespace BankApp.Controllers
             }
             return View(model);
         }
+        [Route("~/")]
+        [Route("/Account/Login")]
         [HttpGet]
         public IActionResult Login()
         {
