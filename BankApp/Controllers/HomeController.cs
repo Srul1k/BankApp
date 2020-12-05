@@ -9,9 +9,11 @@ using BankApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace BankApp.Controllers
 {
+    [Produces("application/json")]
     [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
@@ -21,6 +23,9 @@ namespace BankApp.Controllers
             db = context;
         }
 
+        /// <summary>
+        /// Shows Index.cshtml page with all users
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Index()
@@ -28,6 +33,10 @@ namespace BankApp.Controllers
             return View(await db.Users.ToListAsync());
         }
 
+        /// <summary>
+        /// Get-method for creates User
+        /// </summary>
+        /// <returns>Redirects to the page Create.cshtml</returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
@@ -35,6 +44,11 @@ namespace BankApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Adds User to database.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Redirects to the page Index.cshtml</returns>
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
@@ -43,6 +57,11 @@ namespace BankApp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Shows detailed User information.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Redirects to the page Details.cshtml</returns>
         [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Details(int? id)
@@ -61,6 +80,11 @@ namespace BankApp.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Shows detailed User information for changes.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Redirects to the page Edit.cshtml</returns>
         [HttpGet]
         [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> Edit(int? id)
@@ -74,6 +98,11 @@ namespace BankApp.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Edits User in database.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Redirects to the page Index.cshtml</returns>
         [HttpPost]
         public async Task<IActionResult> Edit(User user)
         {
@@ -82,6 +111,11 @@ namespace BankApp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Shows short User description for deletes.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Redirects to the page Delete.cshtml</returns>
         [Route("/Home/Delete/{id?}")]
         [HttpGet]
         [ActionName("Delete")]
@@ -97,9 +131,18 @@ namespace BankApp.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Deletes User.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Redirects to the page Index.cshtml</returns>
+        /// <response code="200">If the user is successfully deleted</response>
+        /// <response code="404">If the user is not found</response>
         [Route("/Home/Delete/{id?}")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id != null)

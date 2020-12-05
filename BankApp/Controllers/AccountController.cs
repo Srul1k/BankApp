@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BankApp.Controllers
 {
+    [Produces("application/json")]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
@@ -19,11 +20,26 @@ namespace BankApp.Controllers
         {
             _context = context;
         }
+
+        /// <summary>
+        /// Get-method for user registration
+        /// </summary>
+        /// <returns>Redirects to the page Register.cshtml</returns>
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
+        /// <summary>
+        /// Registers User.
+        /// </summary>
+        /// <param name="model">Takes RegisterModel</param>
+        /// <returns>
+        /// Redirects to the page Create.cshtml if registration completed successfully
+        /// Return current Register.cshtml page with ErrorViewModel if the data is entered incorrectly
+        /// </returns>
+        /// <response code="200">If user registration was successful</response>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
@@ -51,6 +67,11 @@ namespace BankApp.Controllers
             }
             return View(model);
         }
+
+        /// <summary>
+        /// Get-method for user login
+        /// </summary>
+        /// <returns>Redirects to the page Login.cshtml</returns>
         [Route("~/")]
         [Route("/Account/Login")]
         [HttpGet]
@@ -58,6 +79,16 @@ namespace BankApp.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Logs in user.
+        /// </summary>
+        /// <param name="model">Takes LoginModel</param>
+        /// <returns>
+        /// Redirects to the page Index.cshtml if the user logged in successfully
+        /// Return current Login.cshtml page with ErrorViewModel if the user logged in unsuccessfully
+        /// </returns>
+        /// <response code="200">If the user logged in successfully</response>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
