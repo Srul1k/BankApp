@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using BankApp.Models;
-using BankApp.Controllers;
+﻿using BankApp.Controllers;
 using BankApp.Data;
-using Xunit;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using BankApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace BankApp.Tests.UnitTests
 {
@@ -19,10 +17,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Index();
 
+                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 var model = Assert.IsAssignableFrom<IEnumerable<User>>(
                     viewResult.ViewData.Model);
@@ -35,10 +36,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = controller.Create();
 
+                // Assert
                 Assert.IsType<ViewResult>(result);
             }
         }
@@ -48,10 +52,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Create(new User() { Name = "John" });
 
+                // Assert
                 var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
                 Assert.Null(redirectToActionResult.ControllerName);
                 Assert.Equal("Index", redirectToActionResult.ActionName);
@@ -63,10 +70,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Details(1);
 
+                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 var model = Assert.IsAssignableFrom<User>(
                     viewResult.Model);
@@ -79,10 +89,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Details(-117013);
 
+                // Assert
                 Assert.IsType<NotFoundResult>(result);
             }
         }
@@ -92,10 +105,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Edit(1);
 
+                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 var model = Assert.IsAssignableFrom<User>(
                     viewResult.Model);
@@ -108,10 +124,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Edit(-117013);
 
+                // Assert
                 Assert.IsType<NotFoundResult>(result);
             }
         }
@@ -121,12 +140,15 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
                 var editedUser = await context.Users.FirstOrDefaultAsync(p => p.Id == 1);
                 editedUser.Name = "Василий";
 
+                // Act
                 var result = await controller.Edit(editedUser);
 
+                // Assert
                 var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
                 Assert.Null(redirectToActionResult.ControllerName);
                 Assert.Equal("Index", redirectToActionResult.ActionName);
@@ -139,10 +161,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.ConfirmDelete(1);
 
+                // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
                 var model = Assert.IsAssignableFrom<User>(
                     viewResult.Model);
@@ -155,10 +180,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.ConfirmDelete(-117013);
 
+                // Assert
                 Assert.IsType<NotFoundResult>(result);
             }
         }
@@ -168,10 +196,13 @@ namespace BankApp.Tests.UnitTests
         {
             using (var context = GetApplicationContext())
             {
+                // Arrange
                 var controller = new HomeController(context);
 
+                // Act
                 var result = await controller.Delete(1);
 
+                // Assert
                 var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
                 Assert.Null(redirectToActionResult.ControllerName);
                 Assert.Equal("Index", redirectToActionResult.ActionName);
